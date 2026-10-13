@@ -1,10 +1,19 @@
-#!/bin/bash
+# Fall back to the copies bundled in the repo
+[ -f "$SOUND_FILE" ] || SOUND_FILE="$SCRIPT_DIR/sounds/$SOUND_NAME"
+[ -f "$SOUND_FILE" ] || SOUND_FILE="$SCRIPT_DIR/$SOUND_NAME"#!/bin/bash
 
 # Determine the directory where the script is located
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-# By default, play the single ding sound. You can change this to clean_ding_3.opus
-SOUND_FILE="$SCRIPT_DIR/clean_ding_3.opus"
+# Sounds live outside the repo so git operations can't delete them.
+# Pick any file from $SOUND_DIR (run generate_sounds.py to create more).
+SOUND_DIR="${CLAUDE_SOUND_DIR:-$HOME/.claude/sounds}"
+SOUND_NAME="done_glass_chord.opus"
+
+SOUND_FILE="$SOUND_DIR/$SOUND_NAME"
+# Fall back to the copies bundled in the repo
+[ -f "$SOUND_FILE" ] || SOUND_FILE="$SCRIPT_DIR/sounds/$SOUND_NAME"
+[ -f "$SOUND_FILE" ] || SOUND_FILE="$SCRIPT_DIR/$SOUND_NAME"
 
 if [ -f "$SOUND_FILE" ]; then
     # -nodisp: Don't show video window
